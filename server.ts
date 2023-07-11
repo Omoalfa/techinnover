@@ -1,12 +1,12 @@
 import "reflect-metadata";
 
 import Container from "typedi";
-import UserRouter from "@Routes/User";
 import App from ".";
+import DroneRouter from "@/Routes/Drone";
 
-const userRouter = Container.get(UserRouter);
+const droneRouter = Container.get(DroneRouter);
 
-const app = new App([userRouter])
+const app = new App([droneRouter])
 
 app.listen();
 
