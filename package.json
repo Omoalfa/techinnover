@@ -7,7 +7,10 @@
     "migrate:make": "knex --knexfile src/Database/knexfile.ts migrate:make",
     "migrate:latest": "knex --knexfile src/Database/knexfile.ts migrate:latest",
     "migrate:rollback": "knex --knexfile src/Database/knexfile.ts migrate:rollback",
+    "migrate:rollback:all": "knex --knexfile src/Database/knexfile.ts migrate:rollback --all",
     "start": "ts-node -r tsconfig-paths/register server.ts",
+    "test": "cross-env NODE_ENV=test npm run migrate:latest && cross-env NODE_ENV=test mocha --timeout 20000 -r ts-node/register src/test/**/*.spec.ts -r tsconfig-paths/register --recursive --exit || true",
+    "posttest": "cross-env NODE_ENV=test npm run migrate:rollback:all",
     "dev": "nodemon"
   },
   "repository": {
@@ -17,11 +20,15 @@
   "author": "Omoalfa",
   "license": "ISC",
   "dependencies": {
+    "chai": "^4.3.7",
+    "chai-http": "^4.4.0",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
     "knex": "^2.4.2",
+    "mocha": "^10.2.0",
     "morgan": "^1.10.0",
     "pg": "^8.11.1",
     "reflect-metadata": "^0.1.13",
@@ -36,6 +43,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
+    "@types/mocha": "^10.0.1",
     "@types/morgan": "^1.9.4",
     "nodemon": "^2.0.22"
   }
