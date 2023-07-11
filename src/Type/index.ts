@@ -21,3 +21,12 @@ export enum EDroneState {
   DELIVERED = "delivered",
   RETURNING = "returning",
 }
+
+export interface IDrone {
+  id?: number;
+  serial_number: string;
+  model: EDroneModel;
+  weight_limit: number;
+  battery: number;
+  state: EDroneState;
+}
