@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
-import { NODE_ENV, PORT, LOG_FORMAT } from '@Config';
+import { NODE_ENV, PORT, LOG_FORMAT, TEST_PORT } from '@Config';
 import { Routes } from '@Interfaces/router';
 import { logger, stream } from '@Logger/index';
 
@@ -13,7 +13,7 @@ class App {
   constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || 'development';
-    this.port = PORT || 3000;
+    this.port = this.env === "test" ? TEST_PORT : PORT || 3000;
 
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
@@ -41,7 +41,7 @@ class App {
 
   private initializeRoutes(routes: Routes[]) {
     routes.forEach(route => {
-      this.app.use(route.path, route.router);
+      this.app.use(`/api/v1${route.path}`, route.router);
     });
   }
 }

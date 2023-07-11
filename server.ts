@@ -6,8 +6,10 @@ import DroneRouter from "@/Routes/Drone";
 
 const droneRouter = Container.get(DroneRouter);
 
-const app = new App([droneRouter])
+const instance = new App([droneRouter])
 
-app.listen();
+instance.listen();
+
+const app = instance.getServer(); 
 
 export default app;
