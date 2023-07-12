@@ -32,4 +32,43 @@ export interface IDrone {
   created_at?: Date;
   updated_at?: Date;
   deleted_at?: Date;
+  current_delivery_id?: number;
+  current_delivery?: IDelivery;
+}
+
+export interface IMedication {
+  id?: number;
+  name: string;
+  weight: number;
+  code: string;
+  image: string;
+  created_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
+}
+
+export enum EDeliveryStatus {
+  INITIALIZED = "INITIALIZED",
+  LOADING = "LOADING",
+  FULL = "FULL",
+  CLOSED = "CLOSED"
+}
+
+export interface IDelivery {
+  id?: number;
+  total_weight: number;
+  destination: string;
+  drone_id?: number;
+  items?: IDeliveryItems[];
+  status: EDeliveryStatus;
+  created_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
+}
+
+export interface IDeliveryItems {
+  id?: number;
+  medication_id?: number;
+  medication?: IMedication;
+  delivery_id?: number;
 }

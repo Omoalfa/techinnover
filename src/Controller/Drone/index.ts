@@ -2,7 +2,7 @@ import DroneAdapters from "@/Database/adapters/drones";
 import { logger } from "@/Logger";
 import { EDroneState } from "@/Type";
 import { generatePageTag, getLastEndId, getPreviousPageRang } from "@/Utils/pagination";
-import { created, serverError, successPaginated } from "@Utils/api_response";
+import { created, serverError, success, successAction, successPaginated } from "@Utils/api_response";
 import { Request, Response } from "express";
 import { Service } from "typedi";
 
@@ -29,7 +29,7 @@ class DroneController {
 
   public getDrone = async (req: Request, res: Response) => {
     const { state, limit = 20, page, pt } = req.query as any as { 
-      state: EDroneState,
+      state: "available" | "unavailable",
       limit: string,
       page: "next" | "prev",
       pt: string,
@@ -63,6 +63,35 @@ class DroneController {
     } catch (error) {
       logger.error(error)
       return serverError(res)
+    }
+  }
+
+  public loadDrone =async (req: Request, res: Response) => {
+    const { medication_id, quantity } = req.body;
+    const drone_id = Number(req.params.id)
+
+    try {
+      await this.droneAdapter.DBLoadDrone({
+        drone_id, medication_id, quantity
+      });
+
+      return successAction(res);
+    } catch (error) {
+      logger.error(error)
+      return serverError(res);
+    }
+  }
+
+  public getDroneItems = async (req: Request, res: Response) => {
+    const drone_id = Number(req.params.id)
+
+    try {
+      const [drone, items] = await this.droneAdapter.DBGetDroneItems(drone_id);
+
+      return success(res, { drone, items });
+    } catch (error) {
+      logger.error(error);
+      return serverError(res);
     }
   }
 }

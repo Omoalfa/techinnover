@@ -3,6 +3,7 @@ import express from 'express';
 import morgan from 'morgan';
 import { NODE_ENV, PORT, LOG_FORMAT, TEST_PORT } from '@Config';
 import { Routes } from '@Interfaces/router';
+import fileUpload from "express-fileupload";
 import { logger, stream } from '@Logger/index';
 
 class App {
@@ -37,6 +38,13 @@ class App {
     this.app.use(cors());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(fileUpload({
+      useTempFiles : true,
+      tempFileDir : '/tmp/',
+      limits: {
+        fileSize: 5 * 1024 * 1024
+      }
+    }))
   }
 
   private initializeRoutes(routes: Routes[]) {

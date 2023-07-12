@@ -5,6 +5,7 @@ Question link is [here](https://techinnover.slab.com/public/posts/node-js-interv
 ## Requirements
 - Nodejs - 17 or higher
 - Postgresql
+- [Cloudinary](https://cloudinary.com/)
 
 ## Installation
 - clone the app

@@ -103,7 +103,7 @@ describe('Drone Tests', async () => {
         limit: 10,
         page: "next",
         pt: "p1:1-10",
-        state: EDroneState.IDLE
+        status: "available"  // can be "available" or "unavailable"
       })
 
       expect(res.status).to.equals(200);
