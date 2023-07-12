@@ -23,6 +23,7 @@
     "paths": {
       "@/*": ["*"],
       "@Config": ["Config"],
+      "@CronJob": ["CronJob"],
       "@Controllers/*": ["Controllers/*"],
       "@Database/*": ["Database/*"],
       "@Interfaces/*": ["Interfaces/*"],
