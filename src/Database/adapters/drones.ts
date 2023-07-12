@@ -147,12 +147,11 @@ class DroneAdapters {
     }
   }
 }
-
 @Service()
 export class DroneValidatorAdapters {
   public DBIsSerialNumberExist = async (sn: string): Promise<boolean> => {
     try {
-      const drone = await knex.select(["id", "serial_number"]).from(ETables.DRONES).where("serial_number", sn).first();
+      const drone = await knex.select(["id", "serial_number", "battery"]).from(ETables.DRONES).where("serial_number", sn).first();
 
       if (drone) return true;
       return false;
@@ -177,6 +176,29 @@ export class DroneValidatorAdapters {
       const medication = await knex.select(["id", "code", "weight"]).from(ETables.MEDICATIONS).where("id", id).first();
 
       return medication;
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+
+@Service()
+export class CronDroneAdapters {
+  public getAllDrones = async () => {
+    try {
+      const drones = await knex.select("*").from(ETables.DRONES).where<IDrone[]>("deleted_at", null);
+
+      return drones;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public updateDroneBattery = async (id: number, battery: number) => {
+    try {
+      await knex.table(ETables.DRONES).update({ battery }).where("id", id).onConflict().merge()
+
+      return;
     } catch (error) {
       throw error;
     }

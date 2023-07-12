@@ -32,4 +32,17 @@ class MedicationAdapter {
   }
 }
 
+@Service()
+export class MedicationValidationAdapter {
+  public DBIsMedicationExist = async (value: string | number, column: "code" | "id" | "name"): Promise<boolean> => {
+    try {
+      const medication = await knex.select("*").from(ETables.MEDICATIONS).where<IMedication>(column, value)
+
+      return !!medication;
+    } catch (error) {
+      throw error
+    }
+  }
+}
+
 export default MedicationAdapter;

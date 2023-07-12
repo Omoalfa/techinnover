@@ -90,12 +90,15 @@ class DroneValidator extends Validator {
       isInt: true,
       custom: {
         options: async (id, { req }) => {
+          const drone = req.body.drone;
+
+          if (drone.battery < 25) throw new Error("Drone battery needs to be recharged/replaced!")
+
           const exist = await this.droneAdapter.DBIsMedicationIdExist(id);
 
           if (!exist) throw new Error("Drone not found");
 
           const weight = exist.weight * req.body.quantity;
-          const drone = req.body.drone;
           const newWeight = (drone.total_weight ?? 0) + weight;
 
           if (drone.current_delivery_id && drone.weight_limit < newWeight) throw new Error("Weight limit exceeded")

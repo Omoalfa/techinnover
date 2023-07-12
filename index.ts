@@ -5,6 +5,8 @@ import { NODE_ENV, PORT, LOG_FORMAT, TEST_PORT } from '@Config';
 import { Routes } from '@Interfaces/router';
 import fileUpload from "express-fileupload";
 import { logger, stream } from '@Logger/index';
+import Container, { Inject } from 'typedi';
+import CronJobs from '@/CronJob';
 
 class App {
   public app: express.Application;
@@ -20,12 +22,19 @@ class App {
     this.initializeRoutes(routes);
   }
 
+  private readonly cronJobs: CronJobs = Container.get(CronJobs);
+
+  private startCronJobs () {
+    this.cronJobs.fetchBatterStatusJob.start();
+  }
+
   public listen() {
     this.app.listen(this.port, () => {
       logger.info(`=================================`);
       logger.info(`======= ENV: ${this.env} =======`);
       logger.info(`🚀 App listening on the port ${this.port}`);
       logger.info(`=================================`);
+      this.startCronJobs()
     });
   }
 
