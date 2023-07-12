@@ -41,6 +41,32 @@ class DroneValidator extends Validator {
       optional: true
     }
   })
+
+  public validateGetDronesQuery = this.validate({
+    state: {
+      in: ["query"],
+      isIn: { options: [Object.values(EDroneState)] },
+      optional: true
+    },
+    page: {
+      in: ["query"],
+      isIn: { options: [["next", "prev"]] },
+      optional: true,
+    },
+    limit: {
+      in: ["query"],
+      isInt: true,
+      optional: true,
+    },
+    pt: {
+      in: ["query"],
+      isString: true,
+      matches: {
+        options: /^p\d+:\d+-\d+(?:\|p\d+:\d+-\d+)*$/, errorMessage: "Invalid page tag"
+      },
+      optional: true
+    }
+  })
 }
 
 export default DroneValidator;

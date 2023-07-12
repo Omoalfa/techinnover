@@ -1,4 +1,5 @@
 import {  DB_URL, NODE_ENV, TEST_DB_URL } from '@/Config';
+import { ETables } from '@/Type';
 import { knex as knexObject } from 'knex';
 
 const knexConfig = {
@@ -12,5 +13,9 @@ const knexConfig = {
 }
 
 const knex = knexObject(knexConfig);
+
+export const DBClearTable = async (table: ETables) => {
+  await knex.table(table).del()
+}
 
 export default knex;

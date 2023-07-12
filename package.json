@@ -5,12 +5,13 @@
   "main": "index.ts",
   "scripts": {
     "migrate:make": "knex --knexfile src/Database/knexfile.ts migrate:make",
+    "seed:make": "knex --knexfile src/Database/knexfile.ts seed:make",
+    "seed:run": "knex --knexfile src/Database/knexfile.ts seed:run",
     "migrate:latest": "knex --knexfile src/Database/knexfile.ts migrate:latest",
     "migrate:rollback": "knex --knexfile src/Database/knexfile.ts migrate:rollback",
     "migrate:rollback:all": "knex --knexfile src/Database/knexfile.ts migrate:rollback --all",
     "start": "ts-node -r tsconfig-paths/register server.ts",
-    "test": "cross-env NODE_ENV=test npm run migrate:latest && cross-env NODE_ENV=test mocha --timeout 20000 -r ts-node/register src/test/**/*.spec.ts -r tsconfig-paths/register --recursive --exit || true",
-    "posttest": "cross-env NODE_ENV=test npm run migrate:rollback:all",
+    "test": "cross-env NODE_ENV=test npm run migrate:latest && cross-env NODE_ENV=test npm run seed:run && cross-env NODE_ENV=test mocha --timeout 20000 -r ts-node/register src/test/**/*.spec.ts -r tsconfig-paths/register --recursive --exit || true",
     "dev": "nodemon"
   },
   "repository": {

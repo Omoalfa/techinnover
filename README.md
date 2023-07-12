@@ -11,7 +11,7 @@ Question link is [here](https://techinnover.slab.com/public/posts/node-js-interv
 - run `npm install`
 - setup environment variables
 - run `npm run migrate:latest`
-- also run the `npm run seed:latest` to seed the database with dummy data
+- also run the `npm run seed:run` to seed the database with dummy data
 
 *remember to create the database your are using before runing migrate:latest*
 
