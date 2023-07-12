@@ -29,4 +29,7 @@ export interface IDrone {
   weight_limit: number;
   battery: number;
   state: EDroneState;
+  created_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
 }
