@@ -22,6 +22,8 @@ class DroneRouter implements Routes {
   private initializeRoutes () {
     this.router.post('/', this.droneValidator.validateCreateDrone, this.droneController.createDrone);
     this.router.get('/', this.droneValidator.validateGetDronesQuery, this.droneController.getDrone);
+    this.router.post('/:id', this.droneValidator.validateDroneId, this.droneValidator.validateDroneLoad, this.droneController.loadDrone);
+    this.router.get('/:id', this.droneValidator.validateDroneId, this.droneController.getDroneItems);
   }
 }
 

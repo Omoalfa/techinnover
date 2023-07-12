@@ -43,9 +43,9 @@ class DroneValidator extends Validator {
   })
 
   public validateGetDronesQuery = this.validate({
-    state: {
+    status: {
       in: ["query"],
-      isIn: { options: [Object.values(EDroneState)] },
+      isIn: { options: [["available", "unavailable"]] },
       optional: true
     },
     page: {
@@ -65,6 +65,47 @@ class DroneValidator extends Validator {
         options: /^p\d+:\d+-\d+(?:\|p\d+:\d+-\d+)*$/, errorMessage: "Invalid page tag"
       },
       optional: true
+    }
+  })
+
+  public validateDroneId = this.validate({
+    id: {
+      in: ["params"],
+      isInt: true,
+      custom: {
+        options: async (id, { req }) => {
+          const [exist, drone] = await this.droneAdapter.DBIsDroneIdExist(id);
+
+          if (!exist) throw new Error("Drone not found");
+
+          req.body.drone = drone;
+        }
+      }
+    }
+  })
+
+  public validateDroneLoad = this.validate({
+    medication_id: {
+      in: ["body"],
+      isInt: true,
+      custom: {
+        options: async (id, { req }) => {
+          const exist = await this.droneAdapter.DBIsMedicationIdExist(id);
+
+          if (!exist) throw new Error("Drone not found");
+
+          const weight = exist.weight * req.body.quantity;
+          const drone = req.body.drone;
+          const newWeight = (drone.total_weight ?? 0) + weight;
+
+          if (drone.current_delivery_id && drone.weight_limit < newWeight) throw new Error("Weight limit exceeded")
+          console.log(weight, newWeight, drone.weight_limit)
+        }
+      }
+    },
+    quantity: {
+      in: ["body"],
+      isInt: true,
     }
   })
 }
